@@ -14,16 +14,9 @@ import folium
 from folium.plugins import MarkerCluster
 
 class WikiDataQueryResults:
-    """
-    A class that can be used to query data from Wikidata using SPARQL and return the results 
-    as a Pandas DataFrame or a list of dictionaries.
-    """
+
     def __init__(self, query: str):
-        """
-        Initializes the WikiDataQueryResults object with a SPARQL query string.
-        
-        :param query: A SPARQL query string.
-        """
+     
         self.user_agent = "WDQS-example Python/%s.%s" % (sys.version_info[0], sys.version_info[1])
         self.endpoint_url = "https://query.wikidata.org/sparql"
         self.sparql = SPARQLWrapper(self.endpoint_url, agent=self.user_agent)
@@ -31,12 +24,7 @@ class WikiDataQueryResults:
         self.sparql.setReturnFormat(JSON)
 
     def __transform2dicts(self, results: List[Dict]) -> List[Dict]:
-        """
-        Helper function to transform SPARQL query results into a list of dictionaries.
-        
-        :param results: A list of query results returned by SPARQLWrapper.
-        :return: A list of dictionaries, where each dictionary represents a result row.
-        """
+      
         new_results = []
         for result in results:
             new_result = {}
@@ -46,21 +34,12 @@ class WikiDataQueryResults:
         return new_results
 
     def _load(self) -> List[Dict]:
-        """
-        Helper function to load the data from Wikidata using the SPARQLWrapper query, 
-        and transform the results into a list of dictionaries.
-        
-        :return: A list of dictionaries containing the query results.
-        """
+      
         results = self.sparql.query().convert()['results']['bindings']
         return self.__transform2dicts(results)
 
     def execute_query(self) -> pd.DataFrame:
-        """
-        Executes the SPARQL query and returns the results as a Pandas DataFrame.
-        
-        :return: A Pandas DataFrame containing the query results.
-        """
+       
         query_results = self._load()
         return pd.DataFrame(query_results)
 
